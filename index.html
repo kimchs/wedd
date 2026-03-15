@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Александр & Нина — 15 апреля</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg:         #1c1c22;
+      --surface:    #23232b;
+      --border:     rgba(255,255,255,.09);
+      --border-mid: rgba(255,255,255,.16);
+      --text:       #ddd8d0;
+      --text-dim:   #8a8790;
+      --text-faint: #5a5860;
+      --accent:     #8e9fc4;
+      --accent-v:   #9b8fb5;
+      --highlight:  #c0cfe0;
+      --sans:       'Outfit', sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-weight: 300;
+      font-size: 17px;
+      line-height: 1.65;
+      min-height: 100vh;
+    }
+    .doc {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 80px 36px 120px;
+    }
+    hr { border: none; border-top: 1px solid var(--border); margin: 56px 0; }
+    hr.thick { border-top: 1px solid var(--border-mid); }
+
+    /* ── Meta bar ── */
+    .meta-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border-mid);
+      margin-bottom: 72px;
+      opacity: 0;
+      animation: fadeIn .6s .05s forwards;
+    }
+    .meta-id   { font-size: .78rem; font-weight: 300; color: var(--text-faint); letter-spacing: .06em; }
+    .meta-date { font-size: .78rem; font-weight: 400; color: var(--accent); letter-spacing: .04em; }
+
+    /* ── Hero ── */
+    .hero { margin-bottom: 72px; }
+    .hero-label {
+      font-size: .78rem; font-weight: 300; color: var(--text-faint);
+      letter-spacing: .18em; text-transform: uppercase; margin-bottom: 22px;
+      opacity: 0; animation: fadeIn .6s .15s forwards;
+    }
+    .hero-title {
+      font-size: clamp(2.6rem, 9vw, 4.6rem);
+      font-weight: 200; line-height: 1.08; letter-spacing: -.02em; color: var(--text);
+      opacity: 0; animation: fadeIn .7s .25s forwards;
+    }
+    .hero-title .name-b { color: var(--accent); }
+    .hero-title .amp { color: var(--text-faint); padding: 0 .12em; }
+    .hero-tagline {
+      margin-top: 26px; font-size: .95rem; font-weight: 300;
+      color: var(--text-dim); max-width: 460px; line-height: 1.7;
+      opacity: 0; animation: fadeIn .6s .4s forwards;
+    }
+
+    /* ── Section heading ── */
+    .section-head {
+      font-size: .73rem; font-weight: 400; letter-spacing: .2em;
+      text-transform: uppercase; color: var(--text-faint); margin-bottom: 26px;
+    }
+
+    /* ── KV table ── */
+    .kv-table { width: 100%; border-collapse: collapse; }
+    .kv-table tr {
+      border-bottom: 1px solid var(--border);
+      opacity: 0; animation: fadeIn .5s forwards;
+    }
+    .kv-table tr:nth-child(1) { animation-delay: .28s; }
+    .kv-table tr:nth-child(2) { animation-delay: .36s; }
+    .kv-table tr:nth-child(3) { animation-delay: .44s; }
+    .kv-table tr:nth-child(4) { animation-delay: .52s; }
+    .kv-table tr:last-child { border-bottom: none; }
+    .kv-table td { padding: 18px 0; vertical-align: top; }
+    .kv-key {
+      font-size: .78rem; font-weight: 400; color: var(--text-faint);
+      width: 36%; padding-right: 28px !important; letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+    .kv-val { font-size: 1rem; color: var(--text); }
+    .kv-val .primary { display: block; font-weight: 400; }
+    .kv-val .secondary { display: block; font-size: .85rem; color: var(--text-dim); margin-top: 3px; }
+    .kv-val .hi { color: var(--highlight); font-weight: 400; font-size: 1.05rem; }
+
+    /* ── Swatches ── */
+    .swatch-grid { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 6px; }
+    .swatch-chip {
+      display: flex; align-items: center; gap: 9px;
+      padding: 7px 14px 7px 10px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .swatch-dot { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
+    .swatch-chip span { font-size: .78rem; font-weight: 300; color: var(--text-dim); }
+
+    /* ── RSVP block ── */
+    .rsvp-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 40px 36px;
+    }
+    .rsvp-head {
+      display: flex; justify-content: space-between; align-items: baseline;
+      margin-bottom: 30px;
+    }
+    .rsvp-title { font-size: 1.1rem; font-weight: 400; color: var(--text); }
+    .rsvp-deadline { font-size: .78rem; font-weight: 300; color: var(--text-faint); }
+
+    .field-wrap { margin-bottom: 22px; }
+    .field-label {
+      display: block; font-size: .73rem; font-weight: 400;
+      color: var(--text-faint); letter-spacing: .14em;
+      text-transform: uppercase; margin-bottom: 9px;
+    }
+    .field-input {
+      width: 100%; background: var(--bg); border: 1px solid var(--border-mid);
+      color: var(--text); font-family: var(--sans); font-weight: 300;
+      font-size: 1rem; padding: 11px 16px; outline: none;
+      transition: border-color .2s; border-radius: 0; -webkit-appearance: none;
+    }
+    .field-input::placeholder { color: var(--text-faint); }
+    .field-input:focus { border-color: var(--accent); }
+    .field-input.error { border-color: #c47a7a; animation: shake .3s; }
+
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      25%      { transform: translateX(-6px); }
+      75%      { transform: translateX(6px); }
+    }
+
+    .btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 26px; }
+    .btn {
+      padding: 13px 16px; font-family: var(--sans); font-weight: 400;
+      font-size: .82rem; letter-spacing: .1em; text-transform: uppercase;
+      border: 1px solid; cursor: pointer; background: transparent;
+      transition: all .2s; border-radius: 0;
+    }
+    .btn-yes { border-color: var(--accent); color: var(--accent); }
+    .btn-yes:hover { background: var(--accent); color: var(--bg); }
+    .btn-no  { border-color: var(--border-mid); color: var(--text-dim); }
+    .btn-no:hover { border-color: var(--accent-v); color: var(--accent-v); }
+
+    /* ── Sending state ── */
+    .sending-msg {
+      display: none; padding-top: 24px;
+      font-size: .88rem; color: var(--text-dim); font-weight: 300;
+    }
+    .sending-msg.show { display: block; }
+
+    /* ── Response ── */
+    .response { display: none; padding: 28px 0 4px; }
+    .response.show { display: block; }
+    .resp-row { display: flex; align-items: baseline; gap: 16px; margin-bottom: 12px; }
+    .resp-key {
+      font-size: .73rem; font-weight: 400; color: var(--text-faint);
+      letter-spacing: .12em; text-transform: uppercase;
+      flex-shrink: 0; width: 88px;
+    }
+    .resp-val { font-size: .95rem; font-weight: 300; color: var(--text); }
+    .resp-val.accent { color: var(--accent); font-weight: 400; }
+    .resp-val.muted  { color: var(--text-dim); font-size: .88rem; }
+    .resp-val.violet { color: var(--accent-v); font-weight: 400; }
+
+    /* ── Footer ── */
+    .footer {
+      margin-top: 80px; padding-top: 22px;
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: baseline;
+    }
+    .footer span { font-size: .78rem; font-weight: 300; color: var(--text-faint); }
+
+    /* ── Animations ── */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .reveal { opacity: 0; transform: translateY(16px); transition: opacity .65s ease, transform .65s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 500px) {
+      .doc { padding: 52px 22px 80px; }
+      .btn-row { grid-template-columns: 1fr; }
+      .rsvp-block { padding: 28px 20px; }
+      .meta-bar { flex-direction: column; gap: 4px; }
+    }
+  </style>
+</head>
+<body>
+<div class="doc">
+
+  <!-- Meta bar -->
+  <div class="meta-bar">
+    <span class="meta-id">приглашение на свадьбу</span>
+    <span class="meta-date">15 апреля 2025</span>
+  </div>
+
+  <!-- Hero -->
+  <section class="hero">
+    <p class="hero-label">для вас</p>
+    <h1 class="hero-title">
+      Александр<span class="amp"> &amp; </span><span class="name-b">Нина</span>
+    </h1>
+    <p class="hero-tagline">
+      Мы будем рады видеть вас на нашей свадьбе.
+      Пожалуйста, подтвердите своё присутствие до 1 апреля.
+    </p>
+  </section>
+
+  <hr class="thick reveal">
+
+  <!-- Details -->
+  <section class="reveal">
+    <p class="section-head">детали</p>
+    <table class="kv-table">
+      <tr>
+        <td class="kv-key">Дата</td>
+        <td class="kv-val"><span class="hi">15 апреля 2025</span></td>
+      </tr>
+      <tr>
+        <td class="kv-key">Начало</td>
+        <td class="kv-val"><span class="hi">18:00</span></td>
+      </tr>
+      <tr>
+        <td class="kv-key">Место</td>
+        <td class="kv-val">
+          <span class="primary">Ресторан KIRA</span>
+          <span class="secondary">Кирочная ул., 67, стр. 2 · Санкт-Петербург</span>
+        </td>
+      </tr>
+      <tr>
+        <td class="kv-key">Дресс-код</td>
+        <td class="kv-val">
+          <div class="swatch-grid">
+            <div class="swatch-chip"><div class="swatch-dot" style="background:#2c2c34"></div><span>тёмный графит</span></div>
+            <div class="swatch-chip"><div class="swatch-dot" style="background:#3d3d4a"></div><span>графит</span></div>
+            <div class="swatch-chip"><div class="swatch-dot" style="background:#6b7da8"></div><span>пыльный синий</span></div>
+            <div class="swatch-chip"><div class="swatch-dot" style="background:#7b6b8d"></div><span>пыльный фиолет</span></div>
+            <div class="swatch-chip"><div class="swatch-dot" style="background:#a08cb5"></div><span>светлый сиреневый</span></div>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </section>
+
+  <hr class="reveal">
+
+  <!-- RSVP -->
+  <section class="reveal">
+    <p class="section-head">подтверждение</p>
+    <div class="rsvp-block">
+
+      <div id="rsvp-form">
+        <div class="rsvp-head">
+          <span class="rsvp-title">Вы придёте?</span>
+          <span class="rsvp-deadline">ответить до 1 апреля</span>
+        </div>
+        <div class="field-wrap">
+          <label class="field-label" for="guest-name">Имя и фамилия</label>
+          <input class="field-input" type="text" id="guest-name" placeholder="Иван Иванов" autocomplete="off" />
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-yes" onclick="rsvp('yes')">Буду присутствовать</button>
+          <button class="btn btn-no"  onclick="rsvp('no')">Не смогу прийти</button>
+        </div>
+      </div>
+
+      <div class="sending-msg" id="sending-msg">Отправляем ваш ответ…</div>
+
+      <div class="response" id="yes-resp">
+        <div class="resp-row"><span class="resp-key">Гость</span><span class="resp-val accent" id="yes-name-out"></span></div>
+        <div class="resp-row"><span class="resp-key">Статус</span><span class="resp-val accent">Придёт</span></div>
+        <div class="resp-row"><span class="resp-key">Сообщение</span><span class="resp-val muted">Мы вас ждём. До встречи 15 апреля!</span></div>
+      </div>
+
+      <div class="response" id="no-resp">
+        <div class="resp-row"><span class="resp-key">Гость</span><span class="resp-val" id="no-name-out"></span></div>
+        <div class="resp-row"><span class="resp-key">Статус</span><span class="resp-val violet">Не придёт</span></div>
+        <div class="resp-row"><span class="resp-key">Сообщение</span><span class="resp-val muted">Жаль, что не получится. Спасибо, что сообщили.</span></div>
+      </div>
+
+    </div>
+  </section>
+
+  <footer class="footer reveal">
+    <span>Александр &amp; Нина · 2025</span>
+    <span>Санкт-Петербург</span>
+  </footer>
+
+</div>
+<script>
+  // ─── Вставьте сюда URL вашего Google Apps Script ───
+  const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxASonNxoTtq3fbqe0VyoqRDL_KEyt_zXSc9mLqRvNd2M1GViDJBiYQHBj1YE4UZ3song/exec';
+  // ───────────────────────────────────────────────────
+
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+    });
+  }, { threshold: .1 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  function rsvp(choice) {
+    const input = document.getElementById('guest-name');
+    const name  = input.value.trim();
+    if (!name) {
+      input.classList.add('error');
+      input.focus();
+      setTimeout(() => input.classList.remove('error'), 1000);
+      return;
+    }
+
+    // Скрываем форму, показываем "отправка"
+    document.getElementById('rsvp-form').style.display = 'none';
+    document.getElementById('sending-msg').classList.add('show');
+
+    // Отправляем в Google Sheets
+    if (SCRIPT_URL && SCRIPT_URL !== 'ВСТАВЬТЕ_URL_СЮДА') {
+      fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, status: choice === 'yes' ? 'Придёт' : 'Не придёт' })
+      }).catch(() => {}); // тихо игнорируем ошибки сети
+    }
+
+    // Показываем ответ через короткую паузу
+    setTimeout(() => {
+      document.getElementById('sending-msg').classList.remove('show');
+      if (choice === 'yes') {
+        document.getElementById('yes-name-out').textContent = name;
+        document.getElementById('yes-resp').classList.add('show');
+      } else {
+        document.getElementById('no-name-out').textContent = name;
+        document.getElementById('no-resp').classList.add('show');
+      }
+    }, 800);
+  }
+</script>
+</body>
+</html>
